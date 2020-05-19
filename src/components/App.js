@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { handleInitialData } from '../actions/shared'
-import Home from './Home'
+import Dashboard from './Dashboard'
 import LoadingBar from 'react-redux-loading'
 
 class App extends Component {
@@ -12,9 +12,9 @@ class App extends Component {
     return (
       <div className='container'>
         <LoadingBar style={{ backgroundColor: 'black' }} />
-        {this.props.loading === null
+        {this.props.loading === true
           ? null
-          :<Home/>
+          :<Dashboard/>
         }
       </div>
     )
