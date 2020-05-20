@@ -1,28 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Question from './Question'
+import QuestionsContainer from './QuestionsContainer'
 
 class Dashboard extends Component {
   render() {
-    const {remaningQuestions, answeredQuestions, user } = this.props
+    const {remaningQuestions, answeredQuestions } = this.props
     return (
       <div>
-        <h3 className='center'> Would You Rather ? </h3>
-        <div>        
-          <ul className='home-list'>
-            {remaningQuestions.map((id) => (
-              <li key = {id}>
-                <Question id = {id}/>
-              </li>
-            ))}
-          </ul>
-          <ul className='home-list'>
-            {answeredQuestions.map((id) => (
-              <li key = {id}>
-                <Question id = {id}/>
-              </li>
-            ))}
-          </ul>
+        <h2 className='center'> Would You Rather ? </h2>
+        <div className='row'> 
+          <QuestionsContainer 
+            listQuestion = {remaningQuestions}
+            title = {'Remaining Question'}
+          />
+          <QuestionsContainer 
+            listQuestion = {answeredQuestions}
+            title = {'Answered Question'}
+          />
         </div>
       </div>
     )

@@ -1,14 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { formatDate } from '../utils/helpers'
+import { Link, withRouter } from 'react-router-dom'
 
 class Question extends Component {
   render() {
-    const { question, user } = this.props
-    const { author, timestamp } = question
+    const { question, user, answer } = this.props
+    const { author, timestamp, id } = question
     const { name, avatarURL } = user
+
+    if (question === null) {
+      return <p>This Tweet doesn't existd</p>
+    }
+
     return (
-      <div className='question'>
+      <Link to={`/question/${id}`} className='question'>
         <img
           src={require(`../utils/avatars/${avatarURL}`)}
           alt={`Avatar of ${author}`}
@@ -16,11 +22,12 @@ class Question extends Component {
         />
         <div className='question-info'>
           <div>
-            <span>{name}</span>
+            <span>{`${name} asks :`}</span>
             <div>{formatDate(timestamp)}</div>
+            {answer !== null ? <p>{`You prefers: ${answer}`}</p> : <p>Click to answer</p>}
           </div>
         </div>
-      </div>
+      </Link>
     )
   }
 }
@@ -30,10 +37,12 @@ function mapStateToProps ({authedUser, users, questions}, { id }) {
   const user = users[question.author]
 
   return {
-    authedUser,
     question,
     user,
+    answer : users[authedUser].answers[id]
+    ? question[users[authedUser].answers[id]].text
+    : null,
   }
 }
 
-export default connect(mapStateToProps)(Question)
+export default withRouter(connect(mapStateToProps)(Question))
