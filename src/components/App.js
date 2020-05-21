@@ -17,13 +17,13 @@ class App extends Component {
     return (
       <Router>
         <Fragment>
-          <LoadingBar />
+          <LoadingBar style={{ backgroundColor: 'black' }} />
           <div className='container'>
             <Nav />
             {this.props.loading === true
               ? null
               : <div>
-                  <LeaderBoard/>
+                  <QuestionPage id = "6ni6ok3ym7mf1p33lnez"/>
                 </div>}
           </div>
         </Fragment>

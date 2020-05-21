@@ -8,11 +8,6 @@ class Question extends Component {
     const { question, user, answer } = this.props
     const { author, timestamp, id } = question
     const { name, avatarURL } = user
-
-    if (question === null) {
-      return <p>This Tweet doesn't existd</p>
-    }
-
     return (
       <Link to={`/question/${id}`} className='question'>
         <img

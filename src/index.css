@@ -26,6 +26,9 @@ a {
   padding: 2.5%;
 }
 
+.center {
+  text-align: center;
+}
 
 .btn {
   text-transform: uppercase;
@@ -47,10 +50,6 @@ a {
   outline: 0;
   font-weight: 700;
   border-width: 2px;
-}
-
-.center {
-  text-align: center;
 }
 
 .active {
@@ -99,10 +98,32 @@ li {
   background-color:cornflowerblue;
 }
 
-.score {
+.score-center-titre {
   font-weight: bold;
+  text-align: center;
   font-size: 16px;
   padding: 10px;
+}
+
+.score-center {
+  font-size: 14px;
+  padding: 10px;
+  text-align: center;
+}
+
+.score-user-info {
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.leader-row{
+  margin: 5px auto;
+  padding: 10px;
+  border: 5px solid #dad7d7;
+  background-color:cornflowerblue;
+  border-radius: 3px;
 }
 
 .question {

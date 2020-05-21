@@ -32,9 +32,13 @@ class QuestionPage extends Component {
   }
   render () {
     const { question, user } = this.props
+    
+    if (question === null) {
+      return (<p className = 'center'>Error 404 : This Question doesn't exist ! Why not created it ?</p>)
+    }
+    
     const { author, timestamp } = question
     const { name, avatarURL } = user
-
     const totalAnswer = question.optionOne.votes.length + question.optionTwo.votes.length
     const ratioAnswer = 100 * question.optionOne.votes.length / totalAnswer
     
@@ -110,9 +114,14 @@ function mapStateToProps ({authedUser, users, questions}, { id }) {
   const question = questions[id]
   const user = users[question.author]
 
+
   return {
-    question,
-    user,
+    question: questions[id]
+    ? questions[id]
+    : null,
+    user : questions[id]
+    ? users[questions[id].author]
+    : null,
     authedUser,
   }
 }
