@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Table from 'react-bootstrap/Table'
+import { Table } from 'reactstrap'
 
 class LeaderBoard extends Component {
   render() {
     return (
-      <Table responsive size="sm">
+      <Table>
         <thead>
           <tr>
             <th className = 'score-center-titre'>Users</th>
@@ -31,8 +31,8 @@ class LeaderBoard extends Component {
                   <p>{name}</p>
                 </div>  
               </td>
-                <td className = 'score-center'>{numberOfResponse}</td>
                 <td className = 'score-center'>{numberOfQuestionAsk}</td>
+                <td className = 'score-center'>{numberOfResponse}</td>
                 <td className = 'score-center'>{numberOfResponse + numberOfQuestionAsk}</td>
             </tr>
           )})}

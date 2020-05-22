@@ -7,6 +7,7 @@ import Dashboard from './Dashboard'
 import QuestionPage from './QuestionPage'
 import NewQuestion from './NewQuestion'
 import LeaderBoard from './LeaderBoard'
+import Login from './Login'
 import Nav from './Nav'
 
 class App extends Component {
@@ -21,9 +22,13 @@ class App extends Component {
           <div className='container'>
             <Nav />
             {this.props.loading === true
-              ? null
+              ? <Login />
               : <div>
-                  <QuestionPage id = "6ni6ok3ym7mf1p33lnez"/>
+                <Route path='/' exact component={Login} />
+                  <Route path='/dashboard' exact component={Dashboard} />
+                  <Route path='/question/:id' component={QuestionPage} />
+                  <Route path='/add' component={NewQuestion} />
+                  <Route path='/leaderboard' component={LeaderBoard} />
                 </div>}
           </div>
         </Fragment>

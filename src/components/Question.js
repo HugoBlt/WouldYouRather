@@ -5,9 +5,9 @@ import { Link, withRouter } from 'react-router-dom'
 
 class Question extends Component {
   render() {
-    const { question, user, answer } = this.props
+    const { question, users, answer } = this.props
     const { author, timestamp, id } = question
-    const { name, avatarURL } = user
+    const { name, avatarURL } = users[author]
     return (
       <Link to={`/question/${id}`} className='question'>
         <img
@@ -27,15 +27,14 @@ class Question extends Component {
   }
 }
 
-function mapStateToProps ({authedUser, users, questions}, { id }) {
-  const question = questions[id]
-  const user = users[question.author]
+function mapStateToProps ({authedUser, users, questions}, { qid }) {
+  const question = questions[qid]
 
   return {
     question,
-    user,
-    answer : users[authedUser].answers[id]
-    ? question[users[authedUser].answers[id]].text
+    users,
+    answer : users[authedUser].answers[qid]
+    ? question[users[authedUser].answers[qid]].text
     : null,
   }
 }

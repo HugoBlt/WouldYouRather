@@ -7,8 +7,8 @@ export default function questions (state = {}, action) {
         ...state,
         ...action.questions,
       }
-    case ADD_RESPONSE : 
-    const { authedUser, qid, answer } = action
+    case ADD_RESPONSE :
+      const { authedUser, qid, answer } = action; 
      return {
        ...state,
        [qid] : {
@@ -20,7 +20,7 @@ export default function questions (state = {}, action) {
        }
      }
     case ADD_QUESTION:
-    const { question } = action;
+      const { question } = action;
       return {
         ...state,
         [question.id]: question,

@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button } from 'react-bootstrap';
-import { formatQuestion } from '../utils/helpers'
-import { handleAddQuestion } from '../actions/questions'
+import { Button } from 'reactstrap'
+import { formatQuestion } from '../utils/_DATA'
+import { handleAddQuestion } from '../actions/shared'
+import { Redirect } from 'react-router-dom'
 
 class NewQuestion extends Component {
   state = {
     optionOne: '',
     optionTwo: '',
+    toHome: false,
   }
   handleOptionOne = (e) => {
     const optionOne = e.target.value
@@ -25,15 +27,21 @@ class NewQuestion extends Component {
     e.preventDefault()
     const { optionOne, optionTwo } = this.state
     const { dispatch, authedUser } = this.props
-
-    const question = formatQuestion({optionOne, optionTwo, authedUser})
-
+    const question = formatQuestion({ optionOneText : optionOne, optionTwoText : optionTwo, author : authedUser})
     dispatch(handleAddQuestion(question))
+    this.setState(() => ({
+      toHome : true,
+    }))
   }
   render() {
-    const { optionOne, optionTwo } = this.state
+    const { optionOne, optionTwo, toHome } = this.state
     const questionLeftOne = 280 - optionOne.length
     const questionLeftTwo = 280 - optionTwo.length
+
+    if (toHome === true) {
+      return <Redirect to='/dashboard'/>
+    }
+
     return (
       <div className='center'>
         <h3>Ask a new question</h3>
@@ -80,7 +88,7 @@ class NewQuestion extends Component {
   }
 }
 
-function mapStateToProps ({authedUser, users, questions}) {
+function mapStateToProps ({authedUser}) {
 
   return {
     authedUser,

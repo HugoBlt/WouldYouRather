@@ -6,9 +6,9 @@ const QuestionsContainer = (props) => {
     <div className="column">
       <h4 className = 'center'>{props.title}</h4> 
     <ul className='home-list'>
-      {props.listQuestion.map((id) => (
-        <li key = {id}>
-          <Question id = {id}/>
+      {props.listQuestion.map((qid) => (
+        <li key = {qid}>
+          <Question qid = {qid}/>
         </li>
       ))}
     </ul>

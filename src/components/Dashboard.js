@@ -28,7 +28,7 @@ function mapStateToProps ({authedUser, users, questions}) {
   const answeredQuestions = Object.keys(user.answers)
 
   return {
-    remaningQuestions: Object.keys(questions).filter(id => !answeredQuestions.includes(id))
+    remaningQuestions: Object.keys(questions).filter(qid => !answeredQuestions.includes(qid))
       .sort((a, b) => questions[b].timestamp - questions[a].timestamp),
     answeredQuestions : answeredQuestions
       .sort((a, b) => questions[b].timestamp - questions[a].timestamp),

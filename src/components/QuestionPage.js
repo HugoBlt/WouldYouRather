@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Form, Col, Button } from 'react-bootstrap';
+import { Button, FormGroup, Label, Input } from 'reactstrap';
 import { formatDate } from '../utils/helpers'
-import { handleResponse } from '../actions/questions'
+import { handleResponse } from '../actions/shared'
 
 
 class QuestionPage extends Component {
   state = {
     selectedOption: '',
-    showResult: false,
+    showResult: this.props.alreadyAnswer,
   }
   optionSelected = (e) => {
     this.setState({
@@ -23,6 +23,7 @@ class QuestionPage extends Component {
 
     this.setState({
       showResult: true,
+      selectedOption: '',
     })
     dispatch(handleResponse({
       authedUser,
@@ -31,18 +32,16 @@ class QuestionPage extends Component {
     }))
   }
   render () {
-    const { question, user } = this.props
+    const { question, user, alreadyAnswer, alreadyAnswerChoice} = this.props
     
     if (question === null) {
       return (<p className = 'center'>Error 404 : This Question doesn't exist ! Why not created it ?</p>)
     }
-    
     const { author, timestamp } = question
     const { name, avatarURL } = user
     const totalAnswer = question.optionOne.votes.length + question.optionTwo.votes.length
     const ratioAnswer = 100 * question.optionOne.votes.length / totalAnswer
     
-
     return (
       <div>
         <h2 className='center'> Would You Rather ? </h2>
@@ -58,29 +57,23 @@ class QuestionPage extends Component {
                 <div>{formatDate(timestamp)}</div>
             </div>
             <div className='question-choice'>
-            <Form>
-                <Form.Group>
-                  <Col sm={12}>
-                    <Form.Check
-                      type="radio"
-                      label={question.optionOne.text}
-                      name="answer"
-                      id="optionOne"
-                      onChange={this.optionSelected}
-                    />
-                    <Form.Check
-                      type="radio"
-                      label={question.optionTwo.text}
-                      name="answer"
-                      id="optionTwo"
-                      onChange={this.optionSelected}
-                    />
-                  </Col>
-                </Form.Group>
-                <Button className='btn' disabled = {this.state.selectedOption === ''} onClick={this.handleSubmit}>
-                  Submit
-                </Button>
-              </Form>
+            <FormGroup>
+              <FormGroup check>
+                <Label check onChange={this.optionSelected} >
+                  <Input type="radio" id="optionOne" name="answer" disabled = {alreadyAnswer}/>
+                    {question.optionOne.text}
+                </Label>
+              </FormGroup>
+              <FormGroup check>
+                <Label check onChange={this.optionSelected} >
+                  <Input type="radio" id="optionTwo" name="answer" disabled = {alreadyAnswer}/>
+                    {question.optionTwo.text}
+                </Label>
+              </FormGroup>
+            </FormGroup>
+            <Button className='btn' disabled = {this.state.selectedOption === '' } onClick={this.handleSubmit}>
+              Submit
+            </Button>
             </div>
           </div>
         </div>
@@ -93,10 +86,12 @@ class QuestionPage extends Component {
                 <div className = 'column'>
                   <div className='score'>{`${ratioAnswer}%`}</div>
                   <div>{`${question.optionOne.text}`}</div>
+                  {alreadyAnswerChoice === 'optionOne' &&  <p className = 'choice' >your choice</p>}
                 </div>
                 <div className = 'column'>
                   <div className='score'>{`${100 - ratioAnswer}%`}</div>
                   <div>{`${question.optionTwo.text}`}</div>
+                  {alreadyAnswerChoice === 'optionTwo' && <p className = 'choice' >Your choice</p>}
                 </div>
               </div>
               <div>{`Total Answer : ${totalAnswer}`}</div>
@@ -109,11 +104,17 @@ class QuestionPage extends Component {
   }
 }
 
-function mapStateToProps ({authedUser, users, questions}, { id }) {
+function mapStateToProps ({authedUser, users, questions}, props) {
+  const { id } = props.match.params
+  const alreadyAnswer = Object.keys(users[authedUser].answers).includes(id)
+  let alreadyAnswerChoice = null
 
-  const question = questions[id]
-  const user = users[question.author]
-
+  if (alreadyAnswer && questions[id].optionOne.votes.includes(authedUser)) {
+    alreadyAnswerChoice = 'optionOne'
+  }
+  else if (alreadyAnswer && questions[id].optionTwo.votes.includes(authedUser)){
+    alreadyAnswerChoice = 'optionTwo'
+  }
 
   return {
     question: questions[id]
@@ -123,6 +124,8 @@ function mapStateToProps ({authedUser, users, questions}, { id }) {
     ? users[questions[id].author]
     : null,
     authedUser,
+    alreadyAnswer : alreadyAnswer,
+    alreadyAnswerChoice : alreadyAnswerChoice
   }
 }
 
