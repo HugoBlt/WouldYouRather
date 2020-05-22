@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Form, Button } from 'react-bootstrap'
+import { Form, FormGroup, Button, Input } from 'reactstrap'
 import { setAuthedUser } from '../actions/autheduser'
 import { Redirect } from 'react-router-dom'
 
@@ -34,16 +34,16 @@ class Login extends Component {
       <div className='center'>
         <h3>Choose your profil : </h3>
         <Form >
-            <Form.Group>
-              <Form.Control as="select" onChange={this.handleSelectProfil} value = {this.state.user}> 
-              <option value="" >Select your profil</option>           
-                {Object.keys(this.props.users).map((user) => (
-                  <option key = {this.props.users[user].id} value = {this.props.users[user].id}>
-                    {this.props.users[user].id}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
+          <FormGroup>
+            <Input type="select" value = {this.state.user} onChange={this.handleSelectProfil}>
+            <option value="" >Select your profil</option> 
+              {Object.keys(this.props.users).map((user) => (
+                <option key = {this.props.users[user].id} value = {this.props.users[user].id}>
+                  {this.props.users[user].id}
+                </option>
+              ))}
+            </Input>
+          </FormGroup>
             <Button
               className='btn'
               disabled={this.state.user === ''}
@@ -55,6 +55,8 @@ class Login extends Component {
     )
   }
 }
+
+
 
 function mapStateToProps ({users, authedUser}) {
 
